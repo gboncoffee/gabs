@@ -1,4 +1,5 @@
-use std::{fs, io, path};
+use crate::format_pathbuf;
+use std::{env, fs, io, path};
 
 macro_rules! write_default {
     ($name:literal) => {
@@ -26,6 +27,10 @@ pub fn init() -> Result<(), io::Error> {
         write_default!("header.html")?;
         write_default!("footer.html")?;
         write_default!("index.md")?;
+        println!(
+            "Initialized Gabs website at {}. Building it...",
+            format_pathbuf!(env::current_dir().unwrap())
+        );
         Ok(())
     }
 }
