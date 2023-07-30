@@ -2,6 +2,10 @@
 name = "gabs"
 version = "0.1.0"
 edition = "2021"
+description = "Gabriel's Blog System"
+license = "MIT"
+homepage = "https://github.com/gboncoffee/gabs"
+repository = "https://github.com/gboncoffee/gabs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
