@@ -26,6 +26,7 @@ pub fn init() -> Result<(), io::Error> {
     } else {
         write_default!("header.html")?;
         write_default!("footer.html")?;
+        write_default!("index.html")?;
         write_default!("index.md")?;
         println!(
             "Initialized Gabs website at {}. Building it...",
