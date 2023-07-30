@@ -98,7 +98,14 @@ fn buildmd(md: String, template: Option<&str>, title: Option<&str>, setup: &Setu
     // add the document itself
     let (first_half, second_half) = parse_template(template, setup);
     html.push_str(first_half);
-    html.push_str(&comrak::markdown_to_html(&md[..], &comrak::ComrakOptions::default())[..]);
+    // gfm
+    let mut options = comrak::ComrakOptions::default();
+    options.extension.table = true;
+    options.extension.tasklist = true;
+    options.extension.strikethrough = true;
+    options.extension.autolink = true;
+    options.extension.tagfilter = true;
+    html.push_str(&comrak::markdown_to_html(&md[..], &options)[..]);
     html.push_str(second_half);
 
     try_add_file_on_gabs_dir(&mut html, "footer.html");
