@@ -1,5 +1,5 @@
-use crate::{gabs_markdown, setup::Setup};
-use std::{ffi, fs, io, path};
+use crate::{gabs_markdown, init, setup::Setup};
+use std::{env, ffi, fs, io, path};
 
 #[macro_export]
 macro_rules! format_pathbuf {
@@ -98,14 +98,37 @@ fn build_dir(dir: fs::ReadDir, setup: &Setup) {
     }
 }
 
-pub fn build() -> Result<(), io::Error> {
+macro_rules! set_current_dir_or_panic {
+    ($dir:ident) => {{
+        if env::set_current_dir($dir).is_err() {
+            panic!("Could not set the current directory.");
+        }
+    }};
+}
+
+fn goto_project_directory(path: &path::Path) -> Result<(), io::Error> {
     if let Ok(dir) = fs::read_dir("_gabs") {
         build_dir(dir, &Setup::load(fs::read_dir("_gabs").unwrap()));
         Ok(())
     } else {
-        Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            "Could not read directory _gabs. Are you inside a Gabs website?",
-        ))
+        if let Some(parent) = path.parent() {
+            set_current_dir_or_panic!(parent);
+            goto_project_directory(&parent)
+        } else {
+            Err(io::Error::new(io::ErrorKind::NotFound, ""))
+        }
+    }
+}
+
+pub fn build() -> Result<(), io::Error> {
+    let cwd = env::current_dir().expect("Could not get current directory.");
+    let cwd = cwd.as_path();
+    let ret = goto_project_directory(&cwd);
+    if ret.is_err() {
+        set_current_dir_or_panic!(cwd);
+        init::init()?;
+        build()
+    } else {
+        ret
     }
 }
