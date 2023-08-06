@@ -1,6 +1,6 @@
 [package]
 name = "gabs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Gabriel's Blog System"
 license = "MIT"
