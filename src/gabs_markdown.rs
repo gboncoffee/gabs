@@ -130,6 +130,7 @@ pub fn md2html(md: String, setup: &Setup) -> String {
     let mut md = String::new();
     for line in lines {
         md.push_str(line);
+        md.push('\n');
     }
 
     buildmd(md, template, title, setup)
