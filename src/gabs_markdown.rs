@@ -6,7 +6,9 @@ const HEADER_PREFIX: &str = "#!gabs";
 
 fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
     let string = if let Some(template) = template {
-        if path::PathBuf::from("_gabs").join(template).exists() {
+        let mut stylesheet = path::PathBuf::from("_gabs").join(template);
+        stylesheet.set_extension("css");
+        if stylesheet.exists() {
             format!("<link rel=\"stylesheet\" href=\"/{template}.css\">\n")
         } else {
             String::from("")
