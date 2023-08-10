@@ -41,30 +41,16 @@ fn load_templates(dir: fs::ReadDir) -> HashMap<String, String> {
 }
 
 pub struct Setup {
-    pub global_style: Option<path::PathBuf>,
-    pub global_script: Option<path::PathBuf>,
+    pub has_global_style: bool,
+    pub has_global_script: bool,
     pub templates: HashMap<String, String>,
 }
 
 impl Setup {
     pub fn load(dir: fs::ReadDir) -> Setup {
         Setup {
-            global_style: {
-                let path = path::PathBuf::from("_gabs").join("global.css");
-                if path.exists() {
-                    Some(path)
-                } else {
-                    None
-                }
-            },
-            global_script: {
-                let path = path::PathBuf::from("_gabs").join("global.css");
-                if path.exists() {
-                    Some(path)
-                } else {
-                    None
-                }
-            },
+            has_global_style: path::PathBuf::from("_gabs").join("global.css").exists(),
+            has_global_script: path::PathBuf::from("_gabs").join("global.css").exists(),
             templates: load_templates(dir),
         }
     }

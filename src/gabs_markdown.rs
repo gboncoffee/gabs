@@ -1,4 +1,4 @@
-use crate::{format_pathbuf, setup::Setup};
+use crate::setup::Setup;
 use comrak;
 use std::{fs, path};
 
@@ -9,7 +9,7 @@ fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
         let mut stylesheet = path::PathBuf::from("_gabs").join(template);
         stylesheet.set_extension("css");
         if stylesheet.exists() {
-            format!("<link rel=\"stylesheet\" href=\"/{template}.css\">\n")
+            format!("<link rel=\"stylesheet\" href=\"{template}.css\">\n")
         } else {
             String::from("")
         }
@@ -18,13 +18,8 @@ fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
     };
     html.push_str(&string[..]);
 
-    if let Some(style) = setup.global_style.as_ref() {
-        html.push_str(
-            &format!(
-                "<link rel=\"stylesheet\" href=\"{}\">",
-                format_pathbuf!(style)
-            )[..],
-        );
+    if setup.has_global_style {
+        html.push_str("<link rel=\"stylesheet\" href=\"global.css\">");
     }
 }
 
@@ -42,13 +37,8 @@ fn add_scripts(html: &mut String, template: Option<&str>, setup: &Setup) {
     };
     html.push_str(&string[..]);
 
-    if let Some(script) = setup.global_script.as_ref() {
-        html.push_str(
-            &format!(
-                "<script type=\"text/javascript\" src=\"{}\" defer></script>",
-                format_pathbuf!(script)
-            )[..],
-        );
+    if setup.has_global_script {
+        html.push_str("<script type=\"text/javascript\" src=\"global.js\" defer></script>");
     }
 }
 
