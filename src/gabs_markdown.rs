@@ -30,7 +30,9 @@ fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
 
 fn add_scripts(html: &mut String, template: Option<&str>, setup: &Setup) {
     let string = if let Some(template) = template {
-        if path::PathBuf::from("_gabs").join(template).exists() {
+        let mut script = path::PathBuf::from("_gabs").join(template);
+        script.set_extension("js");
+        if script.exists() {
             format!("<script type=\"text/javascript\" src=\"{template}.js\" defer></script>")
         } else {
             String::from("")
