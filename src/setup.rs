@@ -49,19 +49,21 @@ pub struct Setup {
 impl Setup {
     pub fn load(dir: fs::ReadDir) -> Setup {
         Setup {
-            global_style: if let Ok(path) =
-                fs::read_to_string(path::PathBuf::from("_gabs").join("global.css"))
-            {
-                Some(path::PathBuf::from(path))
-            } else {
-                None
+            global_style: {
+                let path = path::PathBuf::from("_gabs").join("global.css");
+                if path.exists() {
+                    Some(path)
+                } else {
+                    None
+                }
             },
-            global_script: if let Ok(path) =
-                fs::read_to_string(path::PathBuf::from("_gabs").join("global.js"))
-            {
-                Some(path::PathBuf::from(path))
-            } else {
-                None
+            global_script: {
+                let path = path::PathBuf::from("_gabs").join("global.css");
+                if path.exists() {
+                    Some(path)
+                } else {
+                    None
+                }
             },
             templates: load_templates(dir),
         }
