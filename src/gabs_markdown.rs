@@ -7,14 +7,14 @@ const HEADER_PREFIX: &str = "#!gabs";
 fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
     // add the global style before so the specific can override stuff
     if setup.has_global_style {
-        html.push_str("<link rel=\"stylesheet\" href=\"global.css\">");
+        html.push_str("<link rel=\"stylesheet\" href=\"/global.css\">");
     }
 
     let string = if let Some(template) = template {
         let mut stylesheet = path::PathBuf::from("_gabs").join(template);
         stylesheet.set_extension("css");
         if stylesheet.exists() {
-            format!("<link rel=\"stylesheet\" href=\"{template}.css\">\n")
+            format!("<link rel=\"stylesheet\" href=\"/{template}.css\">\n")
         } else {
             String::from("")
         }
@@ -26,14 +26,14 @@ fn add_styles(html: &mut String, template: Option<&str>, setup: &Setup) {
 
 fn add_scripts(html: &mut String, template: Option<&str>, setup: &Setup) {
     if setup.has_global_script {
-        html.push_str("<script type=\"text/javascript\" src=\"global.js\" defer></script>");
+        html.push_str("<script type=\"text/javascript\" src=\"/global.js\" defer></script>");
     }
 
     let string = if let Some(template) = template {
         let mut script = path::PathBuf::from("_gabs").join(template);
         script.set_extension("js");
         if script.exists() {
-            format!("<script type=\"text/javascript\" src=\"{template}.js\" defer></script>")
+            format!("<script type=\"text/javascript\" src=\"/{template}.js\" defer></script>")
         } else {
             String::from("")
         }

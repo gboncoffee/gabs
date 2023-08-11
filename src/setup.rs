@@ -50,7 +50,7 @@ impl Setup {
     pub fn load(dir: fs::ReadDir) -> Setup {
         Setup {
             has_global_style: path::PathBuf::from("_gabs").join("global.css").exists(),
-            has_global_script: path::PathBuf::from("_gabs").join("global.css").exists(),
+            has_global_script: path::PathBuf::from("_gabs").join("global.js").exists(),
             templates: load_templates(dir),
         }
     }
